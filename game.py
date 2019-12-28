@@ -12,7 +12,7 @@ class Game:
     timestamp = datetime.min
     mode = 0
     score = 0
-    time = 0
+    time = datetime.timedelta()
     directory = Path()
 
     def __init__(self, replay_dir):
@@ -28,5 +28,4 @@ class Game:
 
         self.score = re.findall(r'statistics\.score=(.+)', output)[0]
 
-        # TODO time type
-        self.time = re.findall(r'result\.time=(\d+)', output)[0]
+        self.time = datetime.timedelta(seconds=int(re.findall(r'result\.time=(\d+)', output)[0]))
