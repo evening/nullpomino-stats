@@ -3,6 +3,7 @@
 quickly view [nullpomino](https://github.com/nullpomino/nullpomino) replay information. Developed so I can view progress for the line race mode.
 
 installation:
+
 ```
 pip install nullstats
 ```
@@ -21,4 +22,5 @@ u.load()
 u.line_race_over_time()
 
 > [ line graph here ]
+
 ```

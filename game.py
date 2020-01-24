@@ -3,6 +3,9 @@ from enum import Enum
 from pathlib import Path
 from datetime import datetime, timedelta
 
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
 
 class GameMode(Enum):
     MARATHON = 1
@@ -27,12 +30,27 @@ class Game(object):
 
         self.score = re.findall(r"statistics\.score=(.+)", replay_data)[0]
         self.time = timedelta(
-            seconds=int(re.findall(r"result\.time=(\d+)", replay_data)[0])
+            seconds=int(re.findall(r"result\.time=(\d+)", replay_data)[0]) / 60
         )
 
         mode = re.findall(r"name\.mode=(.+)", replay_data)[0].replace(" ", "_")
         self.mode = getattr(GameMode, mode)
 
+        def __str__():
+            return "{} | {}".format(self.mode, self.timestamp)
+
 
 class Replays(object):
-    pass
+    def __init__(self, replay_dir):
+        self.directory = Path(replay_dir).glob("**/*")
+        self.games = []
+
+    def load(self):
+        for file in self.directory:
+            if file.suffix == ".rep":
+                self.games.append(Game(file))
+
+    def line_race_over_time(self):
+        days = [i.timestamp for i in self.games if i.mode is GameMode.LINE_RACE]
+        times = [i.time.seconds for i in self.games if i.mode is GameMode.LINE_RACE]
+        plt.plot(days, times)
