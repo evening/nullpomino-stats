@@ -54,3 +54,4 @@ class Replays(object):
         days = [i.timestamp for i in self.games if i.mode is GameMode.LINE_RACE]
         times = [i.time.seconds for i in self.games if i.mode is GameMode.LINE_RACE]
         plt.plot(days, times)
+        plt.show()
